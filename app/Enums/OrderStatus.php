@@ -21,6 +21,16 @@ enum OrderStatus: string
         };
     }
 
+    public function canTransitionTo(self $target): bool
+    {
+        return in_array($target, match ($this) {
+            self::Pending => [self::Processing, self::Cancelled],
+            self::Processing => [self::Shipped, self::Cancelled],
+            self::Shipped => [self::Completed],
+            self::Completed, self::Cancelled => [],
+        }, true);
+    }
+
     public function badgeClass(): string
     {
         return match ($this) {

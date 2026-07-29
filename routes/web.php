@@ -18,10 +18,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('products', \App\Http\Controllers\ProductController::class)->except('show');
-
-    // 下列 placeholder 將於後續改為資源控制器
-    Route::view('/customers', 'customers.index')->name('customers.index');
-    Route::view('/orders', 'orders.index')->name('orders.index');
+    Route::resource('customers', \App\Http\Controllers\CustomerController::class)->except('show');
+    Route::resource('orders', \App\Http\Controllers\OrderController::class)->only(['index', 'create', 'store', 'show']);
+    Route::patch('/orders/{order}/status', [\App\Http\Controllers\OrderController::class, 'updateStatus'])->name('orders.update-status');
 });
 
 Route::middleware('auth')->group(function () {
