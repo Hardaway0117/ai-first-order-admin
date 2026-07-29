@@ -1,19 +1,19 @@
 <x-guest-layout>
-    <h1 class="h5 mb-3 text-center">確認密碼</h1>
+    <h1 class="h5 mb-3 text-center">{{ __('Confirm Password') }}</h1>
 
-    <p class="text-secondary small">這是安全性較高的操作，請再次輸入密碼以繼續。</p>
+    <p class="text-secondary small">{{ __('This is a secure area of the application. Please confirm your password before continuing.') }}</p>
 
     <form method="POST" action="{{ route('password.confirm') }}">
         @csrf
 
         <div class="mb-3">
-            <x-input-label for="password" value="密碼" />
+            <x-input-label for="password" :value="__('Password')" />
             <x-text-input id="password" type="password" name="password" required autocomplete="current-password" />
             <x-input-error :messages="$errors->get('password')" />
         </div>
 
         <div class="text-end">
-            <x-primary-button>確認</x-primary-button>
+            <x-primary-button>{{ __('Confirm') }}</x-primary-button>
         </div>
     </form>
 </x-guest-layout>

@@ -1,17 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="h4 mb-0">儀表板</h1>
+        <h1 class="h4 mb-0">{{ __('Dashboard') }}</h1>
     </x-slot>
 
-    <p class="text-secondary mb-4">歡迎回來，{{ Auth::user()->name }}！這裡是 {{ config('app.name') }} 管理後台。</p>
+    <p class="text-secondary mb-4">{{ __('Welcome back, :name! This is the :app admin panel.', ['name' => Auth::user()->name, 'app' => config('app.name')]) }}</p>
 
     <div class="row g-3">
         {{-- 統計數字為第一階段佔位資料，第二階段改為實際資料庫查詢 --}}
         @foreach ([
-            ['label' => '商品總數', 'value' => $stats['products'], 'icon' => '📦', 'variant' => 'primary'],
-            ['label' => '客戶總數', 'value' => $stats['customers'], 'icon' => '👥', 'variant' => 'success'],
-            ['label' => '訂單總數', 'value' => $stats['orders'], 'icon' => '🧾', 'variant' => 'info'],
-            ['label' => '待處理訂單', 'value' => $stats['pending_orders'], 'icon' => '⏳', 'variant' => 'warning'],
+            ['label' => __('Total Products'), 'value' => $stats['products'], 'icon' => '📦', 'variant' => 'primary'],
+            ['label' => __('Total Customers'), 'value' => $stats['customers'], 'icon' => '👥', 'variant' => 'success'],
+            ['label' => __('Total Orders'), 'value' => $stats['orders'], 'icon' => '🧾', 'variant' => 'info'],
+            ['label' => __('Pending Orders'), 'value' => $stats['pending_orders'], 'icon' => '⏳', 'variant' => 'warning'],
         ] as $card)
             <div class="col-12 col-sm-6 col-xl-3">
                 <div class="card border-0 shadow-sm h-100">

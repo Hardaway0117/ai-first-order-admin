@@ -1,10 +1,10 @@
 <section>
     <header class="mb-3">
-        <h2 class="h5 mb-1 text-danger">刪除帳號</h2>
-        <p class="text-secondary small mb-0">帳號刪除後，所有資料將永久移除且無法復原，請先備份需要保留的資料。</p>
+        <h2 class="h5 mb-1 text-danger">{{ __('Delete Account') }}</h2>
+        <p class="text-secondary small mb-0">{{ __('Once your account is deleted, all of its data will be permanently removed. Please back up anything you want to keep.') }}</p>
     </header>
 
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmUserDeletionModal">刪除帳號</button>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmUserDeletionModal">{{ __('Delete Account') }}</button>
 
     <div class="modal fade" id="confirmUserDeletionModal" tabindex="-1" aria-labelledby="confirmUserDeletionLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -13,21 +13,21 @@
                 @method('delete')
 
                 <div class="modal-header">
-                    <h3 class="modal-title h5" id="confirmUserDeletionLabel">確定要刪除帳號嗎？</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                    <h3 class="modal-title h5" id="confirmUserDeletionLabel">{{ __('Are you sure you want to delete your account?') }}</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('Close') }}"></button>
                 </div>
 
                 <div class="modal-body">
-                    <p class="text-secondary small">請輸入密碼，以確認永久刪除帳號。</p>
+                    <p class="text-secondary small">{{ __('Please enter your password to confirm you would like to permanently delete your account.') }}</p>
 
-                    <x-input-label for="delete_password" value="密碼" class="visually-hidden" />
-                    <x-text-input id="delete_password" name="password" type="password" placeholder="密碼" />
+                    <x-input-label for="delete_password" :value="__('Password')" class="visually-hidden" />
+                    <x-text-input id="delete_password" name="password" type="password" :placeholder="__('Password')" />
                     <x-input-error :messages="$errors->userDeletion->get('password')" />
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-                    <button type="submit" class="btn btn-danger">確認刪除</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="submit" class="btn btn-danger">{{ __('Confirm Deletion') }}</button>
                 </div>
             </form>
         </div>

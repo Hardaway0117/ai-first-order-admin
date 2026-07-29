@@ -20,6 +20,12 @@
                     {{ $slot }}
                 </div>
             </div>
+
+            <div class="mt-3 small">
+                @foreach (config('app.supported_locales') as $code => $label)
+                    <a href="{{ route('locale.switch', $code) }}" class="text-decoration-none mx-1 {{ app()->getLocale() === $code ? 'fw-bold' : 'text-secondary' }}">{{ $label }}</a>
+                @endforeach
+            </div>
         </div>
     </body>
 </html>

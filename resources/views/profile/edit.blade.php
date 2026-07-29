@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="h4 mb-0">個人資料</h1>
+        <h1 class="h4 mb-0">{{ __('Profile') }}</h1>
     </x-slot>
 
     <div class="row g-4">
