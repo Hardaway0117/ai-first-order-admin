@@ -12,10 +12,15 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 示範管理員帳號（密碼為 factory 預設 "password"，僅供 demo，正式環境請移除）
+        // 示範帳號（密碼為 factory 預設 "password"，僅供 demo，正式環境請移除）
         User::factory()->create([
             'name' => '示範管理員',
             'email' => 'admin@example.com',
+        ]);
+
+        User::factory()->staff()->create([
+            'name' => '示範員工',
+            'email' => 'staff@example.com',
         ]);
 
         $products = Product::factory(20)->create();

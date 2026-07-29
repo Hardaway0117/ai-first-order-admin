@@ -45,6 +45,28 @@ class Order extends Model
         return $number;
     }
 
+    /**
+     * 依狀態機規則轉換狀態；取消時歸還品項庫存。回傳是否轉換成功。
+     */
+    public function transitionTo(OrderStatus $target): bool
+    {
+        if (! $this->status->canTransitionTo($target)) {
+            return false;
+        }
+
+        \Illuminate\Support\Facades\DB::transaction(function () use ($target) {
+            if ($target === OrderStatus::Cancelled) {
+                foreach ($this->items as $item) {
+                    Product::whereKey($item->product_id)->increment('stock', $item->quantity);
+                }
+            }
+
+            $this->update(['status' => $target]);
+        });
+
+        return true;
+    }
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);

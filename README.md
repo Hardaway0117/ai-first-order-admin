@@ -5,7 +5,8 @@
 ## 線上 Demo
 
 - 網址：**https://45.76.223.190.sslip.io**
-- 測試帳號：`admin@example.com`／密碼：`password`
+- 管理員帳號：`admin@example.com`／密碼：`password`（完整權限）
+- 員工帳號：`staff@example.com`／密碼：`password`（唯讀商品／客戶，可建立與處理訂單）
 - 支援繁體中文、简体中文、English 三種語言切換
 
 ## 專案目的
@@ -99,11 +100,40 @@ php artisan test
 - 商品管理：搜尋、分頁、上下架、庫存管理，有訂單紀錄的商品禁止刪除
 - 客戶管理：搜尋、分頁，有訂單的客戶禁止刪除
 - 訂單管理：動態多品項建單（交易鎖定庫存、快照商品名與單價）、狀態機流轉（待處理→處理中→已出貨→已完成／取消），取消自動歸還庫存
+- 權限控管：admin／staff 兩種角色，以 Laravel Policy 實作（staff 對商品／客戶唯讀，可操作訂單；後端授權 + 前端按鈕隱藏雙重防護）
+- REST API：Sanctum Token 認證的 `/api/v1` 端點（商品／客戶 CRUD、訂單建立與狀態流轉），與 Web 介面共用同一套授權與業務邏輯
 - 多語系：繁體中文／简体中文／English
 - 彩蛋：右下角的貓咪會盯著你的滑鼠 🐱
+
+## REST API
+
+所有端點皆在 `/api/v1` 之下，以 Sanctum Bearer Token 認證：
+
+```bash
+# 1. 取得 Token
+curl -X POST https://45.76.223.190.sslip.io/api/v1/auth/token \
+  -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"email":"admin@example.com","password":"password","device_name":"curl"}'
+
+# 2. 帶 Token 呼叫 API
+curl https://45.76.223.190.sslip.io/api/v1/products \
+  -H "Accept: application/json" -H "Authorization: Bearer <TOKEN>"
+```
+
+| Method | 端點 | 說明 |
+|--------|------|------|
+| POST | `/api/v1/auth/token` | 以帳密換取 API Token |
+| GET | `/api/v1/user` | 目前使用者資訊 |
+| GET／POST | `/api/v1/products` | 商品列表（`search`、`per_page`）／新增（admin） |
+| GET／PUT／DELETE | `/api/v1/products/{id}` | 商品明細／更新（admin）／刪除（admin，有訂單回 409） |
+| GET／POST | `/api/v1/customers` | 客戶列表／新增（admin） |
+| GET／PUT／DELETE | `/api/v1/customers/{id}` | 客戶明細／更新（admin）／刪除（admin，有訂單回 409） |
+| GET／POST | `/api/v1/orders` | 訂單列表（`status`、`search`）／建立訂單（含品項） |
+| GET | `/api/v1/orders/{id}` | 訂單明細（含品項與客戶） |
+| PATCH | `/api/v1/orders/{id}/status` | 狀態流轉（非法轉換回 422） |
 
 ## 開發階段規劃
 
 - [x] 第一階段：專案骨架（Breeze 登入、儀表板、導覽列、Docker、CI、測試）
 - [x] 第二階段：商品／客戶／訂單 CRUD 與統計數據、多語系、正式部署
-- [ ] 第三階段：REST API 與權限控管
+- [x] 第三階段：REST API（Sanctum）與角色權限控管（Policy）

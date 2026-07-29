@@ -2,7 +2,9 @@
     <x-slot name="header">
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="h4 mb-0">{{ __('Customers') }}</h1>
-            <a href="{{ route('customers.create') }}" class="btn btn-primary">{{ __('New Customer') }}</a>
+            @can('create', \App\Models\Customer::class)
+                <a href="{{ route('customers.create') }}" class="btn btn-primary">{{ __('New Customer') }}</a>
+            @endcan
         </div>
     </x-slot>
 
@@ -36,12 +38,16 @@
                                 <td class="text-secondary">{{ $customer->phone }}</td>
                                 <td class="text-end">{{ $customer->orders_count }}</td>
                                 <td class="text-end">
-                                    <a href="{{ route('customers.edit', $customer) }}" class="btn btn-sm btn-outline-primary">{{ __('Edit') }}</a>
-                                    <form method="POST" action="{{ route('customers.destroy', $customer) }}" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this customer?') }}')">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Delete') }}</button>
-                                    </form>
+                                    @can('update', $customer)
+                                        <a href="{{ route('customers.edit', $customer) }}" class="btn btn-sm btn-outline-primary">{{ __('Edit') }}</a>
+                                    @endcan
+                                    @can('delete', $customer)
+                                        <form method="POST" action="{{ route('customers.destroy', $customer) }}" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this customer?') }}')">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Delete') }}</button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

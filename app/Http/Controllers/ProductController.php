@@ -30,11 +30,15 @@ class ProductController extends Controller
 
     public function create(): View
     {
+        $this->authorize('create', Product::class);
+
         return view('products.create');
     }
 
     public function store(StoreProductRequest $request): RedirectResponse
     {
+        $this->authorize('create', Product::class);
+
         Product::create($request->validated());
 
         return redirect()->route('products.index')->with('success', __('Product created.'));
@@ -42,11 +46,15 @@ class ProductController extends Controller
 
     public function edit(Product $product): View
     {
+        $this->authorize('update', $product);
+
         return view('products.edit', compact('product'));
     }
 
     public function update(UpdateProductRequest $request, Product $product): RedirectResponse
     {
+        $this->authorize('update', $product);
+
         $product->update($request->validated());
 
         return redirect()->route('products.index')->with('success', __('Product updated.'));
@@ -54,6 +62,8 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
+        $this->authorize('delete', $product);
+
         if ($product->orderItems()->exists()) {
             return back()->with('error', __('This product has order records and cannot be deleted.'));
         }

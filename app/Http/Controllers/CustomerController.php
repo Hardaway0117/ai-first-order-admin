@@ -32,11 +32,15 @@ class CustomerController extends Controller
 
     public function create(): View
     {
+        $this->authorize('create', Customer::class);
+
         return view('customers.create');
     }
 
     public function store(StoreCustomerRequest $request): RedirectResponse
     {
+        $this->authorize('create', Customer::class);
+
         Customer::create($request->validated());
 
         return redirect()->route('customers.index')->with('success', __('Customer created.'));
@@ -44,11 +48,15 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer): View
     {
+        $this->authorize('update', $customer);
+
         return view('customers.edit', compact('customer'));
     }
 
     public function update(UpdateCustomerRequest $request, Customer $customer): RedirectResponse
     {
+        $this->authorize('update', $customer);
+
         $customer->update($request->validated());
 
         return redirect()->route('customers.index')->with('success', __('Customer updated.'));
@@ -56,6 +64,8 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer): RedirectResponse
     {
+        $this->authorize('delete', $customer);
+
         if ($customer->orders()->exists()) {
             return back()->with('error', __('This customer has orders and cannot be deleted.'));
         }

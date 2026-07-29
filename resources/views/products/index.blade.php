@@ -2,7 +2,9 @@
     <x-slot name="header">
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="h4 mb-0">{{ __('Products') }}</h1>
-            <a href="{{ route('products.create') }}" class="btn btn-primary">{{ __('New Product') }}</a>
+            @can('create', \App\Models\Product::class)
+                <a href="{{ route('products.create') }}" class="btn btn-primary">{{ __('New Product') }}</a>
+            @endcan
         </div>
     </x-slot>
 
@@ -42,12 +44,16 @@
                                     </span>
                                 </td>
                                 <td class="text-end">
-                                    <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-outline-primary">{{ __('Edit') }}</a>
-                                    <form method="POST" action="{{ route('products.destroy', $product) }}" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this product?') }}')">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Delete') }}</button>
-                                    </form>
+                                    @can('update', $product)
+                                        <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-outline-primary">{{ __('Edit') }}</a>
+                                    @endcan
+                                    @can('delete', $product)
+                                        <form method="POST" action="{{ route('products.destroy', $product) }}" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this product?') }}')">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Delete') }}</button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty
