@@ -1,10 +1,196 @@
+@import '@fontsource/noto-sans-tc/400.css';
+@import '@fontsource/noto-sans-tc/500.css';
+@import '@fontsource/noto-sans-tc/700.css';
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
-body {
-    background-color: #f5f6fa;
+/* ===== 主題色（indigo）與全域覆寫 ===== */
+:root {
+    --brand: #4f46e5;
+    --brand-dark: #4338ca;
+    --brand-darker: #3730a3;
+    --bs-body-bg: #f6f7fb;
+    --bs-body-color: #1e293b;
+    --bs-link-color: #4f46e5;
+    --bs-link-hover-color: #4338ca;
+    --bs-link-color-rgb: 79, 70, 229;
+    --bs-link-hover-color-rgb: 67, 56, 202;
+    --bs-body-font-family: 'Noto Sans TC', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
-/* 右下角貓咪彩蛋 */
+body {
+    background-color: var(--bs-body-bg);
+    font-family: var(--bs-body-font-family);
+}
+
+/* 跨頁淡入淡出（View Transition API，不支援的瀏覽器自動忽略） */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.18s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none;
+    }
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--brand);
+    --bs-btn-border-color: var(--brand);
+    --bs-btn-hover-bg: var(--brand-dark);
+    --bs-btn-hover-border-color: var(--brand-dark);
+    --bs-btn-active-bg: var(--brand-darker);
+    --bs-btn-active-border-color: var(--brand-darker);
+    --bs-btn-disabled-bg: #6366f1;
+    --bs-btn-disabled-border-color: #6366f1;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--brand);
+    --bs-btn-border-color: #c7d2fe;
+    --bs-btn-hover-bg: var(--brand);
+    --bs-btn-hover-border-color: var(--brand);
+    --bs-btn-active-bg: var(--brand-dark);
+    --bs-btn-active-border-color: var(--brand-dark);
+}
+
+.pagination {
+    --bs-pagination-color: var(--brand);
+    --bs-pagination-hover-color: var(--brand-dark);
+    --bs-pagination-active-bg: var(--brand);
+    --bs-pagination-active-border-color: var(--brand);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #a5b4fc;
+    box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.12);
+}
+
+.form-check-input:checked {
+    background-color: var(--brand);
+    border-color: var(--brand);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: var(--brand);
+}
+
+.card {
+    border: 1px solid #edeff6;
+    border-radius: 0.9rem;
+}
+
+.table thead th {
+    background: #f8f9fc;
+    color: #64748b;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ===== 後台版型：側邊欄 + 頂欄 ===== */
+.admin-sidebar {
+    width: 252px;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+    background: linear-gradient(180deg, #171338 0%, #241e56 55%, #2c2468 100%);
+    color: #c7d2fe;
+}
+
+.offcanvas.admin-sidebar {
+    position: fixed;
+    width: 252px;
+    min-height: auto;
+}
+
+.sidebar-brand .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 0.7rem;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.45);
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 0.6rem;
+    color: #b4bcf5;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.sidebar-link.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.13);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-link svg {
+    flex-shrink: 0;
+    opacity: 0.85;
+}
+
+.sidebar-foot {
+    color: rgba(199, 210, 254, 0.45);
+}
+
+.admin-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    min-height: 58px;
+}
+
+.btn-ghost {
+    --bs-btn-color: #475569;
+    --bs-btn-hover-bg: #eef1f8;
+    --bs-btn-hover-color: #1e293b;
+    --bs-btn-active-bg: #e2e8f0;
+    border: 0;
+}
+
+/* ===== 儀表板統計卡 ===== */
+.stat-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.75rem 1.5rem rgba(30, 27, 75, 0.08) !important;
+}
+
+.stat-tile {
+    width: 56px;
+    height: 56px;
+    border-radius: 1.1rem;
+    display: grid;
+    place-items: center;
+    font-size: 1.55rem;
+}
+
+/* ===== 右下角小貓（後台頁面） ===== */
 .site-cat {
     position: fixed;
     right: 1.25rem;
@@ -27,4 +213,58 @@ body {
 @keyframes cat-blink {
     0%, 92%, 100% { transform: scaleY(1); }
     95% { transform: scaleY(0.05); }
+}
+
+/* ===== 登入頁：極光背景 + 大貓咪 ===== */
+.auth-hero {
+    background: #0b1023;
+}
+
+.aurora {
+    position: absolute;
+    width: 65%;
+    padding-bottom: 65%;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.aurora-1 { background: #4f46e5; top: -12%; left: -12%; animation: aurora-drift-1 14s ease-in-out infinite alternate; }
+.aurora-2 { background: #9333ea; bottom: -18%; right: -8%; animation: aurora-drift-2 17s ease-in-out infinite alternate; }
+.aurora-3 { background: #0ea5e9; bottom: 18%; left: 28%; width: 45%; padding-bottom: 45%; opacity: 0.35; animation: aurora-drift-3 20s ease-in-out infinite alternate; }
+
+@keyframes aurora-drift-1 { to { transform: translate(12%, 16%) scale(1.15); } }
+@keyframes aurora-drift-2 { to { transform: translate(-14%, -10%) scale(1.2); } }
+@keyframes aurora-drift-3 { to { transform: translate(18%, -14%) scale(0.9); } }
+
+.big-cat {
+    width: min(340px, 58%);
+    position: relative;
+    filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.45));
+}
+
+.big-cat-sm {
+    width: 130px;
+    filter: none;
+}
+
+/* 大貓的手掌：輸入密碼時舉起遮住眼睛 */
+.cat-paw {
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+body.cat-hiding .cat-paw-left {
+    transform: translate(27px, -96px) rotate(16deg);
+}
+
+body.cat-hiding .cat-paw-right {
+    transform: translate(-27px, -96px) rotate(-16deg);
+}
+
+body.cat-hiding .big-cat .cat-eye {
+    animation: none;
+    transform: scaleY(0.12);
 }

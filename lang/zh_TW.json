@@ -1,6 +1,7 @@
 {
     "(and :count more error)": "（還有 :count 個錯誤）",
     "(and :count more errors)": "（還有 :count 個錯誤）",
+    "A SaaS order management admin built with an AI-first workflow.": "以 AI-First 工作流程打造的 SaaS 訂單管理後台。",
     "A Timeout Occurred": "發生超時",
     "A decryption key is required.": "需要解密金鑰。",
     "A new verification link has been sent to the email address you provided during registration.": "新的驗證連結已寄送至你註冊時填寫的電子郵件。",

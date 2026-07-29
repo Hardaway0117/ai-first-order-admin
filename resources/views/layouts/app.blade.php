@@ -10,34 +10,47 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        <div class="min-vh-100 d-flex flex-column">
-            @include('layouts.navigation')
+        <div class="d-flex">
+            <aside class="admin-sidebar d-none d-lg-flex flex-column flex-shrink-0">
+                @include('layouts.sidebar-content')
+            </aside>
 
-            @isset($header)
-                <header class="bg-white border-bottom">
-                    <div class="container-fluid px-4 py-3">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            <div class="offcanvas offcanvas-start admin-sidebar d-flex flex-column" tabindex="-1" id="mobileSidebar">
+                <div class="text-end pt-2 pe-2">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="{{ __('Close') }}"></button>
+                </div>
+                @include('layouts.sidebar-content')
+            </div>
 
-            <main class="container-fluid px-4 py-4">
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('Close') }}"></button>
-                    </div>
-                @endif
+            <div class="admin-main flex-grow-1 min-vh-100 d-flex flex-column" style="min-width: 0;">
+                @include('layouts.topbar')
 
-                @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show">
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('Close') }}"></button>
-                    </div>
-                @endif
+                @isset($header)
+                    <header class="bg-white border-bottom">
+                        <div class="px-4 py-3">
+                            {{ $header }}
+                        </div>
+                    </header>
+                @endisset
 
-                {{ $slot }}
-            </main>
+                <main class="admin-content flex-grow-1 px-4 py-4">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('Close') }}"></button>
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('Close') }}"></button>
+                        </div>
+                    @endif
+
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
 
         @include('partials.cat')
