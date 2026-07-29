@@ -67,6 +67,8 @@ npm install && npm run build
 
 開啟 http://localhost:8080 。連接埠與資料庫帳密可透過 `.env` 的 `APP_PORT`、`DB_DATABASE`、`DB_USERNAME`、`DB_PASSWORD` 覆寫；預設值僅供開發使用，請勿將真實密碼提交至版本控制。
 
+> 效能說明：容器內 OPcache 設定為 `validate_timestamps=0`（Windows bind mount 檔案存取慢，關閉重複檢查後回應時間自 2s 降至 0.1s）。因此**修改 PHP 程式後需執行 `docker compose restart app`** 才會生效；日常開發建議直接使用 `php artisan serve`。
+
 ## 測試方式
 
 測試使用 SQLite in-memory 資料庫（見 `phpunit.xml`），不需額外設定：
