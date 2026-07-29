@@ -27,5 +27,7 @@
                 @endforeach
             </div>
         </div>
+
+        @include('partials.cat')
     </body>
 </html>

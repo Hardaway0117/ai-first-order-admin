@@ -3,3 +3,28 @@
 body {
     background-color: #f5f6fa;
 }
+
+/* 右下角貓咪彩蛋 */
+.site-cat {
+    position: fixed;
+    right: 1.25rem;
+    bottom: -6px;
+    width: 72px;
+    z-index: 1030;
+    pointer-events: none;
+}
+
+.cat-pupil {
+    transition: transform 0.08s linear;
+}
+
+.cat-eye {
+    animation: cat-blink 6s infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+@keyframes cat-blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.05); }
+}

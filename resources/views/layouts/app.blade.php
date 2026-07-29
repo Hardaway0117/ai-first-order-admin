@@ -39,5 +39,7 @@
                 {{ $slot }}
             </main>
         </div>
+
+        @include('partials.cat')
     </body>
 </html>
