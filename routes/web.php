@@ -17,8 +17,9 @@ Route::get('/locale/{locale}', function (string $locale) {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // 第二階段將以資源控制器（CRUD）取代下列 placeholder 頁面
-    Route::view('/products', 'products.index')->name('products.index');
+    Route::resource('products', \App\Http\Controllers\ProductController::class)->except('show');
+
+    // 下列 placeholder 將於後續改為資源控制器
     Route::view('/customers', 'customers.index')->name('customers.index');
     Route::view('/orders', 'orders.index')->name('orders.index');
 });

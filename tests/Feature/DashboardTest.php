@@ -28,4 +28,17 @@ class DashboardTest extends TestCase
         $response->assertSee($user->name);
         $response->assertSee('待處理訂單');
     }
+
+    public function test_dashboard_shows_real_statistics(): void
+    {
+        $user = User::factory()->create();
+
+        \App\Models\Product::factory(2)->create();
+        \App\Models\Order::factory()->pending()->create();
+
+        $this->actingAs($user)->get('/dashboard')->assertViewHas('stats', fn (array $stats) => $stats['products'] === 2
+            && $stats['customers'] === 1
+            && $stats['orders'] === 1
+            && $stats['pending_orders'] === 1);
+    }
 }
