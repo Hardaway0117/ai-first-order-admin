@@ -25,6 +25,22 @@ class LocaleTest extends TestCase
         $this->assertNull(session('locale'));
     }
 
+    public function test_locale_choice_is_persisted_on_the_user(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get('/locale/en');
+
+        $this->assertSame('en', $user->fresh()->locale);
+    }
+
+    public function test_saved_locale_is_applied_on_a_new_session(): void
+    {
+        $user = User::factory()->create(['locale' => 'en']);
+
+        $this->actingAs($user)->get('/dashboard')->assertSee('Pending Orders');
+    }
+
     public function test_dashboard_renders_in_selected_locale(): void
     {
         $user = User::factory()->create();

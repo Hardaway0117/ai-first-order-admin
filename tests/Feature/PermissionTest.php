@@ -44,6 +44,22 @@ class PermissionTest extends TestCase
         $this->actingAs($staff)->delete("/customers/{$customer->id}")->assertForbidden();
     }
 
+    public function test_staff_can_update_products(): void
+    {
+        $staff = User::factory()->staff()->create();
+        $product = Product::factory()->create(['stock' => 5]);
+
+        $this->actingAs($staff)->patch("/products/{$product->id}", [
+            'name' => $product->name,
+            'sku' => $product->sku,
+            'price' => $product->price,
+            'stock' => 99,
+            'is_active' => 1,
+        ])->assertRedirect('/products');
+
+        $this->assertSame(99, $product->fresh()->stock);
+    }
+
     public function test_staff_can_create_orders(): void
     {
         $staff = User::factory()->staff()->create();

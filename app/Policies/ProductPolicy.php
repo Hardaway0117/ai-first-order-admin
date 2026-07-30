@@ -24,7 +24,8 @@ class ProductPolicy
 
     public function update(User $user, Product $product): bool
     {
-        return $user->isAdmin();
+        // 員工可做日常維護（調庫存、改價、上下架）；新增與刪除仍限管理員
+        return true;
     }
 
     public function delete(User $user, Product $product): bool

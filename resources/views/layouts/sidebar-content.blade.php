@@ -20,6 +20,12 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l3-2 3 2 2-2 2 2 3-2 3 2V2l-3 2-3-2-2 2-2-2-3 2-3-2z"/><path d="M8 9h8M8 13h6"/></svg>
         {{ __('Orders') }}
     </a>
+    @can('viewAny', \App\Models\User::class)
+        <a class="sidebar-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h1"/><path d="M18 14v6M15 17h6"/></svg>
+            {{ __('Users') }}
+        </a>
+    @endcan
 </nav>
 
 <div class="mt-auto px-4 py-3 small sidebar-foot">Laravel {{ app()->version() }} · PHP {{ PHP_VERSION }}</div>

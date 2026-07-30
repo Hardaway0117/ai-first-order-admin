@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard');
 
-Route::get('/locale/{locale}', function (string $locale) {
+Route::get('/locale/{locale}', function (\Illuminate\Http\Request $request, string $locale) {
     if (array_key_exists($locale, config('app.supported_locales'))) {
         session(['locale' => $locale]);
+        // 登入者的語系偏好存進帳號，跨裝置、跨登入都記得
+        $request->user()?->forceFill(['locale' => $locale])->save();
     }
 
     return back();
@@ -21,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('customers', \App\Http\Controllers\CustomerController::class)->except('show');
     Route::resource('orders', \App\Http\Controllers\OrderController::class)->only(['index', 'create', 'store', 'show']);
     Route::patch('/orders/{order}/status', [\App\Http\Controllers\OrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::resource('users', \App\Http\Controllers\UserController::class)->except('show');
 });
 
 Route::middleware('auth')->group(function () {
