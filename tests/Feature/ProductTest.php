@@ -43,6 +43,20 @@ class ProductTest extends TestCase
             ->assertDontSee('SKU-BB222');
     }
 
+    public function test_products_can_be_filtered_by_status_and_sorted_by_price(): void
+    {
+        Product::factory()->create(['sku' => 'SKU-CHEAP', 'price' => 10, 'is_active' => true]);
+        Product::factory()->create(['sku' => 'SKU-COSTLY', 'price' => 999, 'is_active' => true]);
+        Product::factory()->create(['sku' => 'SKU-OFF', 'is_active' => false]);
+
+        $this->actingAs($this->user)->get('/products?status=0')
+            ->assertSee('SKU-OFF')
+            ->assertDontSee('SKU-CHEAP');
+
+        $this->actingAs($this->user)->get('/products?status=1&sort=price_asc')
+            ->assertSeeInOrder(['SKU-CHEAP', 'SKU-COSTLY']);
+    }
+
     public function test_a_product_can_be_created(): void
     {
         $response = $this->actingAs($this->user)->post('/products', [

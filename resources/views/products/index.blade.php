@@ -14,8 +14,23 @@
                 <div class="col-12 col-md-4">
                     <input type="search" name="search" value="{{ request('search') }}" class="form-control" placeholder="{{ __('Search by name or SKU') }}">
                 </div>
+                <div class="col-6 col-md-2">
+                    <select name="status" class="form-select">
+                        <option value="">{{ __('All Statuses') }}</option>
+                        <option value="1" @selected(request('status') === '1')>{{ __('Active') }}</option>
+                        <option value="0" @selected(request('status') === '0')>{{ __('Inactive') }}</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-3">
+                    <select name="sort" class="form-select">
+                        <option value="">{{ __('Newest') }}</option>
+                        <option value="price_asc" @selected(request('sort') === 'price_asc')>{{ __('Price: low to high') }}</option>
+                        <option value="price_desc" @selected(request('sort') === 'price_desc')>{{ __('Price: high to low') }}</option>
+                        <option value="stock_asc" @selected(request('sort') === 'stock_asc')>{{ __('Stock: low to high') }}</option>
+                    </select>
+                </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-outline-secondary">{{ __('Search') }}</button>
+                    <button type="submit" class="btn btn-outline-secondary">{{ __('Filter') }}</button>
                 </div>
             </form>
 

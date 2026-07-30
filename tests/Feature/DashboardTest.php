@@ -36,9 +36,12 @@ class DashboardTest extends TestCase
         \App\Models\Product::factory(2)->create();
         \App\Models\Order::factory()->pending()->create();
 
-        $this->actingAs($user)->get('/dashboard')->assertViewHas('stats', fn (array $stats) => $stats['products'] === 2
+        $response = $this->actingAs($user)->get('/dashboard');
+
+        $response->assertViewHas('stats', fn (array $stats) => $stats['products'] === 2
             && $stats['customers'] === 1
             && $stats['orders'] === 1
             && $stats['pending_orders'] === 1);
+        $response->assertViewHas('pendingOrders', fn ($orders) => $orders->count() === 1);
     }
 }

@@ -21,7 +21,13 @@ class ProductController extends Controller
                     ->where('name', 'like', "%{$search}%")
                     ->orWhere('sku', 'like', "%{$search}%"));
             })
-            ->latest()
+            ->when($request->filled('status'), fn ($q) => $q->where('is_active', $request->boolean('status')))
+            ->when(true, fn ($q) => match ($request->string('sort')->toString()) {
+                'price_asc' => $q->orderBy('price'),
+                'price_desc' => $q->orderByDesc('price'),
+                'stock_asc' => $q->orderBy('stock'),
+                default => $q->latest(),
+            })
             ->paginate(10)
             ->withQueryString();
 
