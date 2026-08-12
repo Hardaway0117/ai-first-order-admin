@@ -136,4 +136,60 @@ class OrderTest extends TestCase
             ->assertSee($product->name)
             ->assertSee($customer->name);
     }
+
+    public function test_guests_cannot_export_orders(): void
+    {
+        $this->get('/orders/export')->assertRedirect('/login');
+    }
+
+    public function test_orders_can_be_exported_as_csv(): void
+    {
+        $customer = Customer::factory()->create(['name' => '匯出測試客戶']);
+        $product = Product::factory()->create(['price' => 100, 'stock' => 10]);
+
+        $this->actingAs($this->user)->post('/orders', [
+            'customer_id' => $customer->id,
+            'items' => [
+                ['product_id' => $product->id, 'quantity' => 2],
+            ],
+        ]);
+
+        $order = Order::first();
+
+        $response = $this->actingAs($this->user)->get('/orders/export');
+
+        $response->assertOk();
+        $this->assertStringContainsString('text/csv', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString('.csv', $response->headers->get('Content-Disposition'));
+
+        $csv = $response->streamedContent();
+        $this->assertStringContainsString($order->order_number, $csv);
+        $this->assertStringContainsString('匯出測試客戶', $csv);
+        $this->assertStringContainsString('200', $csv);
+    }
+
+    public function test_csv_export_respects_status_filter(): void
+    {
+        $customer = Customer::factory()->create();
+        $product = Product::factory()->create(['price' => 100, 'stock' => 10]);
+
+        foreach (range(1, 2) as $i) {
+            $this->actingAs($this->user)->post('/orders', [
+                'customer_id' => $customer->id,
+                'items' => [
+                    ['product_id' => $product->id, 'quantity' => 1],
+                ],
+            ]);
+        }
+
+        [$kept, $cancelled] = Order::all();
+        $cancelled->transitionTo(OrderStatus::Cancelled);
+
+        $csv = $this->actingAs($this->user)
+            ->get('/orders/export?status=pending')
+            ->streamedContent();
+
+        $this->assertStringContainsString($kept->order_number, $csv);
+        $this->assertStringNotContainsString($cancelled->order_number, $csv);
+    }
 }

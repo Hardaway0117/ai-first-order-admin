@@ -21,6 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('products', \App\Http\Controllers\ProductController::class)->except('show');
     Route::resource('customers', \App\Http\Controllers\CustomerController::class)->except('show');
+    // 匯出要放在 resource 前面，否則 /orders/export 會被 /orders/{order} 吃掉
+    Route::get('/orders/export', [\App\Http\Controllers\OrderController::class, 'export'])->name('orders.export');
     Route::resource('orders', \App\Http\Controllers\OrderController::class)->only(['index', 'create', 'store', 'show']);
     Route::patch('/orders/{order}/status', [\App\Http\Controllers\OrderController::class, 'updateStatus'])->name('orders.update-status');
     Route::resource('users', \App\Http\Controllers\UserController::class)->except('show');

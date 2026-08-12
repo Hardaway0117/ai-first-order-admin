@@ -41,4 +41,16 @@ enum OrderStatus: string
             self::Cancelled => 'text-bg-secondary',
         };
     }
+
+    /** 圖表用色，與狀態徽章同一套 Bootstrap 色系 */
+    public function chartColor(): string
+    {
+        return match ($this) {
+            self::Pending => '#ffc107',
+            self::Processing => '#0dcaf0',
+            self::Shipped => '#0d6efd',
+            self::Completed => '#198754',
+            self::Cancelled => '#6c757d',
+        };
+    }
 }

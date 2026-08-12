@@ -2,7 +2,10 @@
     <x-slot name="header">
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="h4 mb-0">{{ __('Orders') }}</h1>
-            <a href="{{ route('orders.create') }}" class="btn btn-primary">{{ __('New Order') }}</a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('orders.export', request()->query()) }}" class="btn btn-outline-secondary">{{ __('Export CSV') }}</a>
+                <a href="{{ route('orders.create') }}" class="btn btn-primary">{{ __('New Order') }}</a>
+            </div>
         </div>
     </x-slot>
 

@@ -28,6 +28,35 @@
         @endforeach
     </div>
 
+    <div class="row g-3 mt-1">
+        <div class="col-12 col-xl-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="h6 mb-3">📈 {{ __('Revenue trend (last 30 days)') }}</h2>
+                    <div style="height: 260px">
+                        <canvas id="revenueTrendChart"
+                            data-labels='@json($trend['labels'])'
+                            data-values='@json($trend['revenue'])'
+                            data-label="{{ __('Daily revenue') }}"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="h6 mb-3">📊 {{ __('Order status distribution') }}</h2>
+                    <div style="height: 260px">
+                        <canvas id="statusChart"
+                            data-labels='@json($statusChart['labels'])'
+                            data-values='@json($statusChart['counts'])'
+                            data-colors='@json($statusChart['colors'])'></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @if ($pendingOrders->isNotEmpty())
         <div class="card border-0 shadow-sm mt-4">
             <div class="card-body">
