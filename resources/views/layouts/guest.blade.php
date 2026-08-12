@@ -7,6 +7,8 @@
 
         <title>{{ config('app.name', 'AI-First Order Admin') }}</title>
 
+        <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%236d28d9"/><text x="32" y="43" font-family="Arial,sans-serif" font-size="28" font-weight="bold" fill="%23fff" text-anchor="middle">AI</text></svg>'>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
