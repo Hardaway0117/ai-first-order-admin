@@ -13,6 +13,7 @@
 
 - 展示 Laravel、MySQL、REST API、權限控管、自動化測試、Docker、Git、CI/CD 的實作能力。
 - 展示「AI 輔助開發 + 人工驗證」的工程流程（詳見 [docs/AI_WORKFLOW.md](docs/AI_WORKFLOW.md)）。
+- 每個重要技術決策的「為什麼」整理於 [docs/tech-decisions.md](docs/tech-decisions.md)。
 - 第一階段完成專案骨架：登入系統、儀表板、導覽列與 placeholder 頁面；商品／客戶／訂單 CRUD 於後續階段實作。
 
 ## 技術棧
